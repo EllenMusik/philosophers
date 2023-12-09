@@ -1,14 +1,18 @@
 NAME = philo
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
-#DEBUG = -fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra
+DEBUG = -fsanitize=address -g
 HEADER = philo.h
 RM = rm -rf
 
 SRC_DIR	=	./src
 OBJ_DIR	=	./obj
 
-FILES	=	philo\
+FILES	=	main\
+			utility\
+			input_handling\
+			sleep\
+			routine\
 
 
 SRC		=	$(addsuffix .c, $(addprefix $(SRC_DIR)/, $(FILES)))
