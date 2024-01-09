@@ -6,7 +6,7 @@
 /*   By: esteiner <esteiner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:10:49 by esteiner          #+#    #+#             */
-/*   Updated: 2023/12/09 16:03:33 by esteiner         ###   ########.fr       */
+/*   Updated: 2024/01/09 18:49:21 by esteiner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,36 @@ void	create_forks(t_data *data)
 		pthread_mutex_init(&data->forks[i], NULL);
 		i++;
 	}
+	pthread_mutex_init(&data->alive_mutex, NULL);
 }
 
 void	start_philo_threads(t_data *data)
 {
-	int		i;
+	int			i;
+	//p_threat	doctor;
 
 	i = 0;
 	data->philo = malloc(sizeof(t_philo) * data->philo_amount + 1);
 	while (i < data->philo_amount)
 	{
-		data->philo[i].philo_id = i + 1;
+		data->philo[i].fork_is_taken = false;
+		i++;
+	}
+	i = 0;
+	while (i < data->philo_amount)
+	{
+		data->philo[i].philo_id = i;
 		if (i + 1 == data->philo_amount)
-			data->philo[i].next_philo_id = 1;
+			data->philo[i].next_philo_id = 0;
 		else
-			data->philo[i].next_philo_id = i + 2;
+			data->philo[i].next_philo_id = i + 1;
 		data->philo[i].data = data;
 		data->philo[i].fork = data->forks[i];
+		data->philo[i].start_time = get_curr_time();
 		pthread_create(&data->philo[i].thread, NULL, &routine, &data->philo[i]);
 		i++;
 	}
+	//pthread_create(&doctor, NULL, &doc_routine, data;
 	i = 0;
 	while (i < data->philo_amount)
 	{
@@ -78,15 +88,17 @@ void	start_philo_threads(t_data *data)
 /*puts the argv arguments into the main data struct*/
 void	initalise_arguments(char **argv, t_data	*data)
 {
-	data->start_time = get_curr_time();
+	//data->start_time = get_curr_time();
 	data->philo_amount = ft_atol(argv[1]);
 	data->time_to_die = ft_atol(argv[2]);
 	data->time_to_eat = ft_atol(argv[3]);
 	data->time_to_sleep = ft_atol(argv[4]);
+	data->all_alive = true;
 	if (argv[5])
 		data->meal_amount = ft_atol(argv[5]);
 	else
 		data->meal_amount = -1;
+	//printf("start time!: %ld\n", data->start_time);
 }
 
 void	print_data(t_data *data)

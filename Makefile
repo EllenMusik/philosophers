@@ -1,7 +1,7 @@
 NAME = philo
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
-DEBUG = -fsanitize=address -g
+DEBUG = -fsanitize=thread -g 
 HEADER = philo.h
 RM = rm -rf
 
@@ -26,7 +26,7 @@ $(NAME): $(OBJ)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(OBJ_DIR)
-	cc $(CFLAGS) -pthread -o $@ -c $<
+	cc $(CFLAGS) $(DEBUG) -pthread -o $@ -c $<
 
 clean:
 	$(RM) $(OBJ_DIR)

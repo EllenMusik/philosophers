@@ -6,12 +6,13 @@
 /*   By: esteiner <esteiner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 20:27:47 by esteiner          #+#    #+#             */
-/*   Updated: 2023/12/09 21:07:38 by esteiner         ###   ########.fr       */
+/*   Updated: 2024/01/09 19:12:43 by esteiner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
+/* waits the "time to wait" in milliseconds */
 void	ft_isleep(long time_to_wait)
 {
 	long	start_time;
@@ -21,13 +22,13 @@ void	ft_isleep(long time_to_wait)
 	start_time = get_curr_time();
 	while (waited_time < time_to_wait)
 	{
-		usleep(500);
+		usleep(10);
 		waited_time = get_curr_time() - start_time;
-		//printf("waited: %ld\n", waited_time);
 	}
-	printf("waited %ld milliseconds. should have waited %ld milliseconds\n", waited_time, time_to_wait);
+	//printf("waited %ld milliseconds. should have waited %ld milliseconds\n", waited_time, time_to_wait);
 }
 
+/* returns the current time since 1970 in milliseconds (long) */
 long	get_curr_time(void)
 {
 	struct timeval	time;
@@ -38,8 +39,6 @@ long	get_curr_time(void)
 	gettimeofday(&time, NULL);
 	seconds = time.tv_sec;
 	microseconds = time.tv_usec;
-	//printf("seconds: %ld, micro: %ld\n", seconds, microseconds);
 	milliseconds = microseconds / 1000 + seconds * 1000;
-	//printf("milliseconds time: %ld\n", milliseconds);
 	return (milliseconds);
 }
