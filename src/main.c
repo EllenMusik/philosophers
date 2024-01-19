@@ -6,7 +6,7 @@
 /*   By: esteiner <esteiner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 18:57:27 by esteiner          #+#    #+#             */
-/*   Updated: 2024/01/09 15:26:11 by esteiner         ###   ########.fr       */
+/*   Updated: 2024/01/19 18:39:13 by esteiner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,28 @@ int	main(int argc, char **argv)
 	t_data	*data;
 
 	if (argc < 5 || argc > 6)
-		return (printf("wrong argument amount\n"), 1);
+		return (printf("Wrong argument amount\n"), 1);
 	if (!check_input(argv))
 		return (1);
 	data = malloc(sizeof(t_data));
 	initalise_arguments(argv, data);
-	print_data(data);
-	//test_wait(data);
-	create_forks(data);
+	if (data->meal_amount == 0)
+		return (free(data), printf("No meals to be eaten :(\n"), 0);
+	if (data->philo_amount == 1)
+		return (one_philo_routine(data), 0);
+	create_data_mutex(data);
+	init_philo_structs(data);
 	start_philo_threads(data);
 	free_at_end(data);
 	return (0);
 }
 
-void	test_wait(t_data *data)
+void	one_philo_routine(t_data *data)
 {
-	long	start;
-
-	start = get_curr_time();
+	printf("%s%dms philo %d%s", ORANGE, 0, 1, FORK);
 	ft_isleep(data->time_to_die);
-	printf("time passed: %ld\n", get_curr_time() - start);
+	printf("%s%llums philo %d%s", D, data->time_to_die + 1, 1, DIE);
+	free(data);
 }
 
 void	free_at_end(t_data *data)
@@ -49,13 +51,17 @@ void	free_at_end(t_data *data)
 	int	i;
 
 	i = 0;
-	printf("test\n");
 	while (i < data->philo_amount)
 	{
+		pthread_mutex_destroy(&data->philo[i].last_meal_mutex);
+		pthread_mutex_destroy(&data->philo[i].meals_eaten_mutex);
 		if (pthread_mutex_destroy(&data->forks[i]) != 0)
 			printf("mutex destroy error\n");
 		i++;
 	}
+	free(data->forks);
+	free(data->philo);
 	pthread_mutex_destroy(&data->alive_mutex);
+	pthread_mutex_destroy(&data->print_mutex);
 	free (data);
 }

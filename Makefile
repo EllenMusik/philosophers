@@ -1,7 +1,7 @@
 NAME = philo
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
-DEBUG = -fsanitize=thread -g 
+#DEBUG = -fsanitize=thread -g 
 HEADER = philo.h
 RM = rm -rf
 
@@ -13,6 +13,7 @@ FILES	=	main\
 			input_handling\
 			sleep\
 			routine\
+			doc_threats\
 
 
 SRC		=	$(addsuffix .c, $(addprefix $(SRC_DIR)/, $(FILES)))
