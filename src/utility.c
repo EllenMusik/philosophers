@@ -6,7 +6,7 @@
 /*   By: esteiner <esteiner@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 15:12:31 by esteiner          #+#    #+#             */
-/*   Updated: 2023/12/07 21:11:53 by esteiner         ###   ########.fr       */
+/*   Updated: 2024/01/19 17:23:53 by esteiner         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,7 @@ long	number_convert(int x, long nbr, const char *str)
 		return (res * nbr);
 	}
 	else
-	{
 		return (0);
-	}
 }
 
 long	ft_atol(const char *str)
@@ -49,7 +47,6 @@ long	ft_atol(const char *str)
 			nbr *= -1;
 		x++;
 	}
-
 	if (str)
 		nbr = number_convert(x, nbr, str);
 	return (nbr);
